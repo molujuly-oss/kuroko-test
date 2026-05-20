@@ -524,6 +524,88 @@
       text-align: center;
     }
 
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 28px;
+      background: #fff;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+      text-align: center;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 950;
+      color: var(--text);
+    }
+
+    .modal-desc {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .qr-box {
+      margin: 18px auto 0;
+      width: 240px;
+      height: 240px;
+      border-radius: 20px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 10px;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .qr-fallback {
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      background: #fff;
+    }
+
+    .modal-tip {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal-close {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 18px;
+      border-radius: 18px;
+      background: var(--text);
+      color: #fff;
+      font-weight: 950;
+    }
+
     .hidden { display: none !important; }
 
     @media (max-width: 360px) {
@@ -537,7 +619,7 @@
   <div id="homePage" class="page home">
     <div class="card home-card">
       <div class="badge">游音视域｜把喜欢，系在身边</div>
-      <h1 class="home-title">黑篮人格测试</h1>
+      <h1 class="home-title">黑子的篮球人格测试</h1>
       <p class="home-subtitle">测测你在《黑子的篮球》里是哪一种队友人格。</p>
 
       <div class="info-box">
@@ -639,9 +721,22 @@
     <div class="action-stack">
       <button id="downloadBtn" class="primary-btn" style="margin-top: 0;">下载结果卡</button>
       <p id="downloadStatus" class="status"></p>
-      <button id="groupBtn" class="group-btn">进入黑子御签共创群</button>
-      <p class="small-note">想领取完整黑子御签、参与签文和御守方向共创，可以进入小群。</p>
+      <button id="groupBtn" class="group-btn">进入黑子的篮球同好群</button>
+      <p class="small-note">同人御守制作中，不定时掉落同人文~欢迎大家来玩鸭~</p>
       <button id="restartBtn" class="secondary-btn" style="width: 100%; min-height: 56px; border-radius: 24px;">重新测试</button>
+    </div>
+  </div>
+
+  <div id="groupModal" class="modal-mask hidden">
+    <div class="modal-card">
+      <div class="modal-title">黑子的篮球同好群</div>
+      <p class="modal-desc">长按保存二维码，或截图后用 QQ 扫码加入。</p>
+      <div class="qr-box">
+        <img id="groupQrImg" src="./assets/qqgroup.jpg" alt="QQ群二维码" />
+        <div id="groupQrFallback" class="qr-fallback">二维码图片未找到。请把 QQ 群二维码放到：<br />assets/group/qq-group.png</div>
+      </div>
+      <p class="modal-tip">同人御守制作中，不定时掉落同人文~欢迎大家来玩鸭~</p>
+      <button id="closeGroupModalBtn" class="modal-close">我知道了</button>
     </div>
   </div>
 
@@ -1348,7 +1443,22 @@
     $("downloadBtn").addEventListener("click", downloadResultCard);
 
     $("groupBtn").addEventListener("click", () => {
-      alert("这里后续替换成你的微信群二维码、企微链接或跳转页面。");
+      $("groupModal").classList.remove("hidden");
+    });
+
+    $("closeGroupModalBtn").addEventListener("click", () => {
+      $("groupModal").classList.add("hidden");
+    });
+
+    $("groupModal").addEventListener("click", (event) => {
+      if (event.target.id === "groupModal") {
+        $("groupModal").classList.add("hidden");
+      }
+    });
+
+    $("groupQrImg").addEventListener("error", () => {
+      $("groupQrImg").style.display = "none";
+      $("groupQrFallback").style.display = "flex";
     });
   </script>
 </body>
